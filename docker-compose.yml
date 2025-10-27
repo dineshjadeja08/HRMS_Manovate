@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: hrms_postgres
+    environment:
+      POSTGRES_USER: hrms_user
+      POSTGRES_PASSWORD: hrms_password
+      POSTGRES_DB: hrms_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - hrms_network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: hrms_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - hrms_network
+
+  # FastAPI Application
+  app:
+    build: .
+    container_name: hrms_app
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://hrms_user:hrms_password@postgres:5432/hrms_db
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - .:/app
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
+    networks:
+      - hrms_network
+
+  # Celery Worker
+  celery_worker:
+    build: .
+    container_name: hrms_celery_worker
+    command: celery -A app.celery_app worker --loglevel=info
+    environment:
+      - DATABASE_URL=postgresql://hrms_user:hrms_password@postgres:5432/hrms_db
+      - REDIS_HOST=redis
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - .:/app
+    networks:
+      - hrms_network
+
+  # Celery Beat (Scheduler)
+  celery_beat:
+    build: .
+    container_name: hrms_celery_beat
+    command: celery -A app.celery_app beat --loglevel=info
+    environment:
+      - DATABASE_URL=postgresql://hrms_user:hrms_password@postgres:5432/hrms_db
+      - REDIS_HOST=redis
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - .:/app
+    networks:
+      - hrms_network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  hrms_network:
+    driver: bridge
