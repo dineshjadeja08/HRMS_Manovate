@@ -6,21 +6,37 @@ from passlib.context import CryptContext
 from fastapi import HTTPException, status
 from app.config import get_settings
 from app.models import RoleType
+import bcrypt
 
 settings = get_settings()
 
-# Password hashing
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# Password hashing using bcrypt directly to avoid passlib Python 3.13 compatibility issues
+# pwd_context = CryptContext(
+#     schemes=["bcrypt"],
+#     deprecated="auto",
+#     bcrypt__default_rounds=12,
+#     bcrypt__default_ident="2b"
+# )
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Verify a password against its hash"""
-    return pwd_context.verify(plain_password, hashed_password)
+    # Use bcrypt directly to avoid passlib Python 3.13 issues
+    try:
+        return bcrypt.checkpw(
+            plain_password.encode('utf-8'),
+            hashed_password.encode('utf-8')
+        )
+    except Exception as e:
+        return False
 
 
 def get_password_hash(password: str) -> str:
     """Hash a password"""
-    return pwd_context.hash(password)
+    # Use bcrypt directly
+    salt = bcrypt.gensalt(rounds=12)
+    hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
+    return hashed.decode('utf-8')
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:

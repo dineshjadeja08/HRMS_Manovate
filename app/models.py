@@ -94,7 +94,8 @@ class Employee(Base):
     
     # Relationships
     user = relationship("User", back_populates="employee", uselist=False)
-    department = relationship("Department", back_populates="employees")
+    # specify foreign_keys to avoid ambiguity when multiple FK paths exist
+    department = relationship("Department", back_populates="employees", foreign_keys=[department_id])
     position = relationship("Position", back_populates="employees")
     manager = relationship("Employee", remote_side=[id], backref="direct_reports")
     documents = relationship("EmployeeDocument", back_populates="employee", cascade="all, delete-orphan")
@@ -118,7 +119,8 @@ class Department(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     
     # Relationships
-    employees = relationship("Employee", back_populates="department")
+    # specify foreign_keys to avoid ambiguity when multiple FK paths exist
+    employees = relationship("Employee", back_populates="department", foreign_keys=[Employee.department_id])
 
 
 class Position(Base):

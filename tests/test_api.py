@@ -30,9 +30,10 @@ app.dependency_overrides[get_db] = override_get_db
 client = TestClient(app)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(autouse=True)
 def setup_database():
-    """Create test database tables"""
+    """Create test database tables for each test to ensure isolation and make
+    the schema available to tests that don't request the fixture explicitly."""
     Base.metadata.create_all(bind=engine)
     yield
     Base.metadata.drop_all(bind=engine)

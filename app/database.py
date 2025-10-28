@@ -3,6 +3,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 from app.config import get_settings
+import logging
+from sqlalchemy.exc import OperationalError
 
 settings = get_settings()
 
@@ -33,4 +35,11 @@ def get_db() -> Session:
 
 def init_db():
     """Initialize database tables"""
-    Base.metadata.create_all(bind=engine)
+    try:
+        Base.metadata.create_all(bind=engine)
+    except OperationalError as e:
+        # Log a clear warning and continue; this allows the app to start in
+        # developer environments where Postgres may not be running.
+        logging.getLogger("app.database").warning(
+            "Could not initialize database (is the DB running?): %s", e
+        )

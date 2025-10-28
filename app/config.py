@@ -16,8 +16,8 @@ class Settings(BaseSettings):
     HOST: str = "0.0.0.0"
     PORT: int = 8000
     
-    # Database
-    DATABASE_URL: str = "postgresql://hrms_user:hrms_password@localhost:5432/hrms_db"
+    # Database - MySQL
+    DATABASE_URL: str = "mysql+pymysql://root:root@localhost:3306/hrms_db"
     DB_ECHO: bool = False
     
     # JWT
@@ -42,7 +42,7 @@ class Settings(BaseSettings):
     ALLOWED_EXTENSIONS: str = "pdf,doc,docx,jpg,jpeg,png"
     
     # CORS
-    CORS_ORIGINS: str = "http://localhost:3000,http://localhost:8080"
+    CORS_ORIGINS: str = "http://localhost:3000,http://localhost:5173,http://localhost:5174,http://localhost:8080"
     CORS_ALLOW_CREDENTIALS: bool = True
     CORS_ALLOW_METHODS: str = "*"
     CORS_ALLOW_HEADERS: str = "*"
