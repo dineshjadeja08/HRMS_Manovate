@@ -143,8 +143,8 @@ class EmployeeDocument(Base):
     __tablename__ = "employee_documents"
     
     id = Column(Integer, primary_key=True, index=True)
-    employee_id = Column(Integer, ForeignKey("employees.id"), nullable=False)
-    document_type = Column(String(50), nullable=False)
+    employee_id = Column(Integer, ForeignKey("employees.id"), nullable=False, index=True)
+    document_type = Column(String(50), nullable=False, index=True)
     file_name = Column(String(255), nullable=False)
     file_path = Column(String(500), nullable=False)
     file_size = Column(Integer)
@@ -180,9 +180,9 @@ class LeaveBalance(Base):
     __tablename__ = "leave_balances"
     
     id = Column(Integer, primary_key=True, index=True)
-    employee_id = Column(Integer, ForeignKey("employees.id"), nullable=False)
-    leave_type_id = Column(Integer, ForeignKey("leave_types.id"), nullable=False)
-    year = Column(Integer, nullable=False)
+    employee_id = Column(Integer, ForeignKey("employees.id"), nullable=False, index=True)
+    leave_type_id = Column(Integer, ForeignKey("leave_types.id"), nullable=False, index=True)
+    year = Column(Integer, nullable=False, index=True)
     total_days = Column(Float, default=0)
     used_days = Column(Float, default=0)
     available_days = Column(Float, default=0)
@@ -198,13 +198,13 @@ class LeaveRequest(Base):
     __tablename__ = "leave_requests"
     
     id = Column(Integer, primary_key=True, index=True)
-    employee_id = Column(Integer, ForeignKey("employees.id"), nullable=False)
-    leave_type_id = Column(Integer, ForeignKey("leave_types.id"), nullable=False)
-    start_date = Column(Date, nullable=False)
+    employee_id = Column(Integer, ForeignKey("employees.id"), nullable=False, index=True)
+    leave_type_id = Column(Integer, ForeignKey("leave_types.id"), nullable=False, index=True)
+    start_date = Column(Date, nullable=False, index=True)
     end_date = Column(Date, nullable=False)
     total_days = Column(Float, nullable=False)
     reason = Column(Text)
-    status = Column(SQLEnum(LeaveRequestStatus), default=LeaveRequestStatus.PENDING)
+    status = Column(SQLEnum(LeaveRequestStatus), default=LeaveRequestStatus.PENDING, index=True)
     approved_by = Column(Integer, ForeignKey("users.id"), nullable=True)
     approval_comment = Column(Text)
     approved_at = Column(DateTime(timezone=True), nullable=True)
@@ -236,16 +236,16 @@ class AttendanceRecord(Base):
     __tablename__ = "attendance_records"
     
     id = Column(Integer, primary_key=True, index=True)
-    employee_id = Column(Integer, ForeignKey("employees.id"), nullable=False)
-    shift_id = Column(Integer, ForeignKey("shifts.id"), nullable=True)
-    date = Column(Date, nullable=False)
+    employee_id = Column(Integer, ForeignKey("employees.id"), nullable=False, index=True)
+    shift_id = Column(Integer, ForeignKey("shifts.id"), nullable=True, index=True)
+    date = Column(Date, nullable=False, index=True)
     clock_in = Column(DateTime(timezone=True))
     clock_out = Column(DateTime(timezone=True))
-    status = Column(SQLEnum(AttendanceStatus), default=AttendanceStatus.PRESENT)
+    status = Column(SQLEnum(AttendanceStatus), default=AttendanceStatus.PRESENT, index=True)
     hours_worked = Column(Float, default=0)
     geo_location = Column(JSON)  # Store {lat, long}
     notes = Column(Text)
-    is_reviewed = Column(Boolean, default=False)
+    is_reviewed = Column(Boolean, default=False, index=True)
     reviewed_by = Column(Integer, ForeignKey("users.id"), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())

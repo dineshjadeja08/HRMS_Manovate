@@ -3,6 +3,7 @@ import { compensationService, type CompensationHistory } from '../services/compe
 import { employeeService } from '../services/employeeService';
 import type { Employee } from '../types';
 import PrimaryButton from '../components/UI/PrimaryButton';
+import { showSuccess, showError, showWarning } from '../utils/toast';
 import { 
   CurrencyDollarIcon,
   PlusIcon,
@@ -55,7 +56,7 @@ const CompensationHistoryPage: React.FC = () => {
 
   const handleAddCompensation = async () => {
     if (!selectedEmployee || !newCompensation.salary || !newCompensation.reason) {
-      alert('Please fill in all required fields');
+      showWarning('Please fill in all required fields');
       return;
     }
 
@@ -73,10 +74,10 @@ const CompensationHistoryPage: React.FC = () => {
         reason: '',
       });
       loadHistory(selectedEmployee);
-      alert('Compensation change added successfully');
+      showSuccess('Compensation change added successfully');
     } catch (error) {
       console.error('Failed to add compensation change:', error);
-      alert('Failed to add compensation change');
+      showError('Failed to add compensation change');
     }
   };
 

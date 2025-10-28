@@ -5,6 +5,7 @@ import PrimaryButton from '../components/UI/PrimaryButton';
 import InputField from '../components/UI/InputField';
 import StatusBadge from '../components/UI/StatusBadge';
 import DataTable from '../components/UI/DataTable';
+import { showSuccess, showError } from '../utils/toast';
 
 const LeavePage: React.FC = () => {
   const [leaveTypes, setLeaveTypes] = useState<LeaveType[]>([]);
@@ -62,9 +63,10 @@ const LeavePage: React.FC = () => {
       });
       setShowForm(false);
       fetchData();
+      showSuccess('Leave request submitted successfully');
     } catch (error) {
       console.error('Error creating leave request:', error);
-      alert('Failed to create leave request');
+      showError('Failed to create leave request');
     } finally {
       setLoading(false);
     }

@@ -4,6 +4,7 @@ import type { TrainingCourse, TrainingEnrollment } from '../services/performance
 import { useAuth } from '../contexts/AuthContext';
 import PrimaryButton from '../components/UI/PrimaryButton';
 import StatusBadge from '../components/UI/StatusBadge';
+import { showSuccess, showError, showWarning } from '../utils/toast';
 import { AcademicCapIcon, ClockIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 
 const TrainingPage: React.FC = () => {
@@ -37,7 +38,7 @@ const TrainingPage: React.FC = () => {
 
   const handleEnroll = async (courseId: number) => {
     if (!user?.employee_id) {
-      alert('Employee profile not found');
+      showWarning('Employee profile not found');
       return;
     }
 
@@ -48,9 +49,10 @@ const TrainingPage: React.FC = () => {
         course_id: courseId,
       });
       await loadData();
+      showSuccess('Successfully enrolled in course');
     } catch (error: any) {
       console.error('Failed to enroll:', error);
-      alert(error.response?.data?.detail || 'Failed to enroll in course');
+      showError(error.response?.data?.detail || 'Failed to enroll in course');
     } finally {
       setEnrolling(false);
     }

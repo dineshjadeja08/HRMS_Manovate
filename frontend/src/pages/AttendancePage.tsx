@@ -3,6 +3,8 @@ import { attendanceService } from '../services/attendanceService';
 import type { AttendanceRecord } from '../types';
 import PrimaryButton from '../components/UI/PrimaryButton';
 import StatusBadge from '../components/UI/StatusBadge';
+import { TableSkeleton } from '../components/UI/LoadingSkeletons';
+import { showSuccess, showError } from '../utils/toast';
 import { ClockIcon, MapPinIcon } from '@heroicons/react/24/outline';
 
 const AttendancePage: React.FC = () => {
@@ -58,9 +60,10 @@ const AttendancePage: React.FC = () => {
 
       await attendanceService.clockIn(latitude, longitude);
       await loadAttendanceRecords();
+      showSuccess('Successfully clocked in!');
     } catch (error: any) {
       console.error('Clock in failed:', error);
-      alert(error.response?.data?.detail || 'Failed to clock in');
+      showError(error.response?.data?.detail || 'Failed to clock in');
     } finally {
       setActionLoading(false);
     }
@@ -72,9 +75,10 @@ const AttendancePage: React.FC = () => {
 
       await attendanceService.clockOut();
       await loadAttendanceRecords();
+      showSuccess('Successfully clocked out!');
     } catch (error: any) {
       console.error('Clock out failed:', error);
-      alert(error.response?.data?.detail || 'Failed to clock out');
+      showError(error.response?.data?.detail || 'Failed to clock out');
     } finally {
       setActionLoading(false);
     }

@@ -4,6 +4,7 @@ import type { PerformanceReview } from '../services/performanceService';
 import { useAuth } from '../contexts/AuthContext';
 import PrimaryButton from '../components/UI/PrimaryButton';
 import StatusBadge from '../components/UI/StatusBadge';
+import { showSuccess, showError } from '../utils/toast';
 import { StarIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 
 const PerformancePage: React.FC = () => {
@@ -60,9 +61,10 @@ const PerformancePage: React.FC = () => {
       await performanceService.submitFeedback(selectedReview.id, feedbackData);
       await loadReviews();
       closeFeedbackModal();
+      showSuccess('Feedback submitted successfully');
     } catch (error) {
       console.error('Failed to submit feedback:', error);
-      alert('Failed to submit feedback');
+      showError('Failed to submit feedback');
     } finally {
       setSubmitting(false);
     }

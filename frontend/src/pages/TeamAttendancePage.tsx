@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { attendanceManagementService, type AttendanceRecord, type AttendanceAdjustment } from '../services/attendanceManagementService';
 import PrimaryButton from '../components/UI/PrimaryButton';
 import StatusBadge from '../components/UI/StatusBadge';
+import { showSuccess, showError, showWarning } from '../utils/toast';
 import { ClockIcon, CheckIcon, XMarkIcon, PencilIcon } from '@heroicons/react/24/outline';
 
 const TeamAttendancePage: React.FC = () => {
@@ -50,7 +51,7 @@ const TeamAttendancePage: React.FC = () => {
 
   const handleAdjustSubmit = async () => {
     if (!selectedRecord || !adjustmentData.reason) {
-      alert('Please provide a reason for adjustment');
+      showWarning('Please provide a reason for adjustment');
       return;
     }
 
@@ -58,10 +59,10 @@ const TeamAttendancePage: React.FC = () => {
       await attendanceManagementService.adjustAttendance(selectedRecord.id, adjustmentData);
       setShowAdjustModal(false);
       loadRecords();
-      alert('Attendance adjusted successfully');
+      showSuccess('Attendance adjusted successfully');
     } catch (error) {
       console.error('Failed to adjust attendance:', error);
-      alert('Failed to adjust attendance');
+      showError('Failed to adjust attendance');
     }
   };
 
@@ -82,10 +83,10 @@ const TeamAttendancePage: React.FC = () => {
       );
       setShowReviewModal(false);
       loadRecords();
-      alert(`Attendance ${status.toLowerCase()} successfully`);
+      showSuccess(`Attendance ${status.toLowerCase()} successfully`);
     } catch (error) {
       console.error('Failed to review attendance:', error);
-      alert('Failed to review attendance');
+      showError('Failed to review attendance');
     }
   };
 

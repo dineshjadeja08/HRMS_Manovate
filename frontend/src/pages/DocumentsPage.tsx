@@ -4,6 +4,7 @@ import { employeeService } from '../services/employeeService';
 import type { Employee } from '../types';
 import PrimaryButton from '../components/UI/PrimaryButton';
 import StatusBadge from '../components/UI/StatusBadge';
+import { showSuccess, showError, showWarning } from '../utils/toast';
 import { 
   DocumentArrowUpIcon, 
   DocumentArrowDownIcon,
@@ -72,7 +73,7 @@ const DocumentsPage: React.FC = () => {
 
   const handleUpload = async () => {
     if (!selectedEmployee || !selectedFile || !documentType) {
-      alert('Please select employee, document type, and file');
+      showWarning('Please select employee, document type, and file');
       return;
     }
 
@@ -82,10 +83,10 @@ const DocumentsPage: React.FC = () => {
       setSelectedFile(null);
       setDocumentType('');
       loadDocuments(selectedEmployee);
-      alert('Document uploaded successfully');
+      showSuccess('Document uploaded successfully');
     } catch (error) {
       console.error('Failed to upload document:', error);
-      alert('Failed to upload document');
+      showError('Failed to upload document');
     } finally {
       setUploading(false);
     }
@@ -104,7 +105,7 @@ const DocumentsPage: React.FC = () => {
       document.body.removeChild(a);
     } catch (error) {
       console.error('Failed to download document:', error);
-      alert('Failed to download document');
+      showError('Failed to download document');
     }
   };
 
@@ -116,10 +117,10 @@ const DocumentsPage: React.FC = () => {
     try {
       await documentService.deleteDocument(doc.employee_id, doc.id);
       loadDocuments(doc.employee_id);
-      alert('Document deleted successfully');
+      showSuccess('Document deleted successfully');
     } catch (error) {
       console.error('Failed to delete document:', error);
-      alert('Failed to delete document');
+      showError('Failed to delete document');
     }
   };
 
