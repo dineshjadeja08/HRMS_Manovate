@@ -4,12 +4,18 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import MainLayout from './components/Layout/MainLayout';
 import LoginPage from './pages/LoginPage';
 import Dashboard from './pages/Dashboard';
+import AttendancePage from './pages/AttendancePage';
 import LeavePage from './pages/LeavePage';
 import TeamLeavePage from './pages/TeamLeavePage';
 import EmployeesPage from './pages/EmployeesPage';
 import PayrollPage from './pages/PayrollPage';
+import PerformancePage from './pages/PerformancePage';
+import TrainingPage from './pages/TrainingPage';
 import ReportsPage from './pages/ReportsPage';
 import SettingsPage from './pages/SettingsPage';
+import DocumentsPage from './pages/DocumentsPage';
+import TeamAttendancePage from './pages/TeamAttendancePage';
+import CompensationHistoryPage from './pages/CompensationHistoryPage';
 
 // Protected Route Component
 interface ProtectedRouteProps {
@@ -76,6 +82,17 @@ function AppContent() {
       />
 
       <Route
+        path="/attendance"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <AttendancePage />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
         path="/team-leave"
         element={
           <ProtectedRoute allowedRoles={['MANAGER', 'HR_ADMIN']}>
@@ -109,6 +126,28 @@ function AppContent() {
       />
 
       <Route
+        path="/performance"
+        element={
+          <ProtectedRoute allowedRoles={['MANAGER', 'HR_ADMIN']}>
+            <MainLayout>
+              <PerformancePage />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/training"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <TrainingPage />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
         path="/reports"
         element={
           <ProtectedRoute allowedRoles={['HR_ADMIN', 'EXECUTIVE']}>
@@ -125,6 +164,39 @@ function AppContent() {
           <ProtectedRoute>
             <MainLayout>
               <SettingsPage />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/documents"
+        element={
+          <ProtectedRoute allowedRoles={['HR_ADMIN']}>
+            <MainLayout>
+              <DocumentsPage />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/team-attendance"
+        element={
+          <ProtectedRoute allowedRoles={['MANAGER', 'HR_ADMIN']}>
+            <MainLayout>
+              <TeamAttendancePage />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/compensation-history"
+        element={
+          <ProtectedRoute allowedRoles={['HR_ADMIN', 'EXECUTIVE']}>
+            <MainLayout>
+              <CompensationHistoryPage />
             </MainLayout>
           </ProtectedRoute>
         }

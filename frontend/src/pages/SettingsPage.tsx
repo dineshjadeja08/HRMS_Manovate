@@ -57,18 +57,21 @@ const SettingsPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-white">Settings</h1>
+      <div>
+        <h1 className="text-3xl font-semibold text-slate-800">Settings</h1>
+        <p className="text-slate-500 mt-1">Manage your account settings and preferences</p>
+      </div>
 
       {/* Tabs */}
-      <div className="bg-gray-800 rounded-lg shadow-lg">
-        <div className="border-b border-gray-700">
+      <div className="bg-white rounded-xl shadow-card">
+        <div className="border-b border-slate-200">
           <nav className="flex space-x-8 px-6" aria-label="Tabs">
             <button
               onClick={() => setActiveTab('profile')}
               className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === 'profile'
-                  ? 'border-cyan-500 text-cyan-400'
-                  : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300'
+                  ? 'border-primary-500 text-primary-600'
+                  : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
               }`}
             >
               <UserCircleIcon className="h-5 w-5 inline mr-2" />
@@ -78,8 +81,8 @@ const SettingsPage: React.FC = () => {
               onClick={() => setActiveTab('password')}
               className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === 'password'
-                  ? 'border-cyan-500 text-cyan-400'
-                  : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300'
+                  ? 'border-primary-500 text-primary-600'
+                  : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
               }`}
             >
               <KeyIcon className="h-5 w-5 inline mr-2" />
@@ -92,40 +95,40 @@ const SettingsPage: React.FC = () => {
           {/* Profile Tab */}
           {activeTab === 'profile' && (
             <div className="space-y-6">
-              <h2 className="text-xl font-semibold text-white mb-4">Profile Information</h2>
+              <h2 className="text-xl font-semibold text-slate-800 mb-4">Profile Information</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
-                  <div className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-gray-400">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Email</label>
+                  <div className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-slate-600">
                     {user?.email || 'N/A'}
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Role</label>
-                  <div className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-gray-400">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Role</label>
+                  <div className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-slate-600">
                     {user?.role || 'N/A'}
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Employee Number</label>
-                  <div className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-gray-400">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Employee Number</label>
+                  <div className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-slate-600">
                     {user?.employee?.employee_number || 'N/A'}
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
-                  <div className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-gray-400">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Full Name</label>
+                  <div className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-slate-600">
                     {user?.employee ? `${user.employee.first_name} ${user.employee.last_name}` : 'N/A'}
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Department</label>
-                  <div className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-gray-400">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Department</label>
+                  <div className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-slate-600">
                     {user?.employee?.department?.name || 'N/A'}
                   </div>
                 </div>
@@ -149,14 +152,14 @@ const SettingsPage: React.FC = () => {
           {/* Password Tab */}
           {activeTab === 'password' && (
             <div className="space-y-6">
-              <h2 className="text-xl font-semibold text-white mb-4">Change Password</h2>
+              <h2 className="text-xl font-semibold text-slate-800 mb-4">Change Password</h2>
 
               {message && (
                 <div
                   className={`rounded-md p-4 ${
                     message.type === 'success'
-                      ? 'bg-green-900 bg-opacity-30 border border-green-600 text-green-200'
-                      : 'bg-red-900 bg-opacity-30 border border-red-600 text-red-200'
+                      ? 'bg-green-50 border border-green-200 text-green-700'
+                      : 'bg-red-50 border border-red-200 text-red-700'
                   }`}
                 >
                   {message.text}
@@ -193,11 +196,11 @@ const SettingsPage: React.FC = () => {
                   minLength={8}
                 />
 
-                <div className="bg-gray-700 rounded-md p-4">
-                  <p className="text-sm text-gray-300">
-                    <strong>Password Requirements:</strong>
+                <div className="bg-slate-50 rounded-md p-4 border border-slate-200">
+                  <p className="text-sm font-medium text-slate-700">
+                    Password Requirements:
                   </p>
-                  <ul className="list-disc list-inside text-sm text-gray-400 mt-2 space-y-1">
+                  <ul className="list-disc list-inside text-sm text-slate-600 mt-2 space-y-1">
                     <li>Minimum 8 characters</li>
                     <li>Mix of uppercase and lowercase letters recommended</li>
                     <li>Include numbers and special characters for better security</li>

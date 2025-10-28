@@ -8,28 +8,46 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#00D9FF', // Bright Cyan/Teal
-          light: '#33E1FF',
-          dark: '#00B8D9',
+          DEFAULT: '#F97316',
+          50: '#FFF7ED',
+          100: '#FFEDD5',
+          200: '#FED7AA',
+          300: '#FDBA74',
+          400: '#FB923C',
+          500: '#F97316',
+          600: '#EA580C',
+          700: '#C2410C',
+          800: '#9A3412',
+          900: '#7C2D12',
+        },
+        slate: {
+          DEFAULT: '#1E293B',
+          50: '#F8FAFC',
+          100: '#F1F5F9',
+          200: '#E2E8F0',
+          300: '#CBD5E1',
+          400: '#94A3B8',
+          500: '#64748B',
+          600: '#475569',
+          700: '#334155',
+          800: '#1E293B',
+          900: '#0F172A',
         },
         accent: {
-          DEFAULT: '#FFB800', // Yellow/Orange
-          light: '#FFC533',
-          dark: '#E6A600',
+          DEFAULT: '#2563EB',
+          light: '#60A5FA',
+          dark: '#1E40AF',
         },
-        dark: {
-          bg: '#0A0E27', // Deep background
-          card: '#151934', // Card background
-          border: '#1E2139', // Border color
-          hover: '#1A1F3A', // Hover state
-        },
-        status: {
-          pending: '#FFB800',
-          approved: '#00D97E',
-          rejected: '#E63757',
-          active: '#00D97E',
-          inactive: '#6C7293',
-        },
+        success: '#10B981',
+        error: '#EF4444',
+        background: '#F9FAFB',
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+      },
+      boxShadow: {
+        'card': '0 2px 10px rgba(0, 0, 0, 0.05)',
+        'card-hover': '0 4px 20px rgba(0, 0, 0, 0.1)',
       },
     },
   },

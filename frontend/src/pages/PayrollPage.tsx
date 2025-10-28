@@ -95,7 +95,7 @@ const PayrollPage: React.FC = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="text-gray-400">Loading payroll data...</div>
+        <div className="text-slate-600">Loading payroll data...</div>
       </div>
     );
   }
@@ -103,7 +103,10 @@ const PayrollPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-white">Payroll Management</h1>
+        <div>
+          <h1 className="text-3xl font-semibold text-slate-800">Payroll Management</h1>
+          <p className="text-slate-500 mt-1">Create and manage payroll runs</p>
+        </div>
         <PrimaryButton onClick={openCreateModal}>
           <PlayIcon className="h-5 w-5 mr-2 inline" />
           Create Payroll Run
@@ -111,76 +114,76 @@ const PayrollPage: React.FC = () => {
       </div>
 
       {/* Payroll Runs Table */}
-      <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+      <div className="bg-white rounded-xl shadow-card overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-700">
-            <thead className="bg-gray-900">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-white">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
                   Run ID
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
                   Period
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
                   Total Gross
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
                   Total Deductions
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
                   Total Net
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
                   Employees
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
                   Created
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-gray-800 divide-y divide-gray-700">
+            <tbody className="bg-white divide-y divide-gray-100">
               {payrollRuns.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="px-6 py-8 text-center text-gray-400">
+                  <td colSpan={9} className="px-6 py-8 text-center text-slate-500">
                     No payroll runs found. Create a new payroll run to get started.
                   </td>
                 </tr>
               ) : (
                 payrollRuns.map((run) => (
-                  <tr key={run.id} className="hover:bg-gray-700 transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
+                  <tr key={run.id} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-800">
                       #{run.id}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-700">
                       {new Date(run.period_start).toLocaleDateString()} - {new Date(run.period_end).toLocaleDateString()}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                      ${run.total_gross?.toLocaleString() || '0.00'}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-700">
+                      ${run.total_amount?.toLocaleString() || '0.00'}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                      ${run.total_deductions?.toLocaleString() || '0.00'}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-700">
+                      N/A
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-cyan-400">
-                      ${run.total_net?.toLocaleString() || '0.00'}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-primary-600">
+                      ${run.total_amount?.toLocaleString() || '0.00'}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                      {run.payslips?.length || 0}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-700">
+                      N/A
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <StatusBadge status={run.status} />
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-700">
                       {new Date(run.created_at).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm space-x-2">
-                      {run.status === 'DRAFT' && (
+                      {run.status === 'PENDING' && (
                         <button
                           onClick={() => handleProcessPayroll(run.id)}
                           className="inline-flex items-center px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors"
@@ -189,10 +192,10 @@ const PayrollPage: React.FC = () => {
                           Process
                         </button>
                       )}
-                      {run.status === 'PROCESSED' && (
+                      {run.status === 'COMPLETED' && (
                         <button
                           onClick={() => handleExportPayroll(run.id)}
-                          className="inline-flex items-center px-3 py-1 bg-cyan-600 hover:bg-cyan-700 text-white rounded-md transition-colors"
+                          className="inline-flex items-center px-3 py-1 bg-primary-500 hover:bg-primary-600 text-white rounded-md transition-colors"
                         >
                           <DocumentArrowDownIcon className="h-4 w-4 mr-1" />
                           Export
@@ -209,15 +212,15 @@ const PayrollPage: React.FC = () => {
 
       {/* Create Payroll Run Modal */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-          <div className="bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
-            <h3 className="text-xl font-bold text-white mb-6">
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
+            <h3 className="text-xl font-bold text-slate-800 mb-6">
               Create Payroll Run
             </h3>
             
             <form onSubmit={handleCreatePayrollRun} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Period Start Date *
                 </label>
                 <input
@@ -226,12 +229,12 @@ const PayrollPage: React.FC = () => {
                   value={formData.period_start}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="w-full px-3 py-2 border border-gray-200 rounded-md text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Period End Date *
                 </label>
                 <input
@@ -241,12 +244,12 @@ const PayrollPage: React.FC = () => {
                   onChange={handleInputChange}
                   required
                   min={formData.period_start}
-                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="w-full px-3 py-2 border border-gray-200 rounded-md text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
               </div>
 
-              <div className="bg-gray-700 rounded-md p-4 mt-4">
-                <p className="text-sm text-gray-300">
+              <div className="bg-blue-50 rounded-md p-4 mt-4">
+                <p className="text-sm text-slate-700">
                   <strong>Note:</strong> This will create a draft payroll run for all active employees. 
                   You can review and process it after creation.
                 </p>
@@ -257,7 +260,7 @@ const PayrollPage: React.FC = () => {
                   type="button"
                   onClick={closeCreateModal}
                   disabled={submitting}
-                  className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md transition-colors disabled:opacity-50"
+                  className="px-4 py-2 bg-white border border-gray-200 hover:bg-gray-50 text-slate-700 rounded-md transition-colors disabled:opacity-50"
                 >
                   Cancel
                 </button>

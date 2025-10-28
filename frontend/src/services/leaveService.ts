@@ -34,13 +34,19 @@ export const leaveService = {
 
   // Approve leave request
   approveRequest: async (id: number, comment?: string): Promise<LeaveRequest> => {
-    const response = await api.post(`/leave/requests/${id}/approve`, { comment });
+    const response = await api.put(`/leave/requests/${id}/action`, { 
+      action: 'Approve',
+      comment 
+    });
     return response.data;
   },
 
   // Reject leave request
   rejectRequest: async (id: number, comment?: string): Promise<LeaveRequest> => {
-    const response = await api.post(`/leave/requests/${id}/reject`, { comment });
+    const response = await api.put(`/leave/requests/${id}/action`, { 
+      action: 'Reject',
+      comment 
+    });
     return response.data;
   },
 

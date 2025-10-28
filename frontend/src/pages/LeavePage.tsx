@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
 import { leaveService } from '../services/leaveService';
 import type { LeaveType, LeaveRequest } from '../types';
 import PrimaryButton from '../components/UI/PrimaryButton';
@@ -8,7 +7,6 @@ import StatusBadge from '../components/UI/StatusBadge';
 import DataTable from '../components/UI/DataTable';
 
 const LeavePage: React.FC = () => {
-  const { user } = useAuth();
   const [leaveTypes, setLeaveTypes] = useState<LeaveType[]>([]);
   const [myRequests, setMyRequests] = useState<LeaveRequest[]>([]);
   const [showForm, setShowForm] = useState(false);
@@ -74,29 +72,34 @@ const LeavePage: React.FC = () => {
 
   const columns = [
     {
+      key: 'leave_type_id' as keyof LeaveRequest,
       header: 'Leave Type',
-      accessor: (row: LeaveRequest) => row.leave_type?.name || 'N/A',
+      render: (_value: any, row: LeaveRequest) => row.leave_type?.name || 'N/A',
     },
     {
+      key: 'start_date' as keyof LeaveRequest,
       header: 'Start Date',
-      accessor: (row: LeaveRequest) => new Date(row.start_date).toLocaleDateString(),
+      render: (_value: any, row: LeaveRequest) => new Date(row.start_date).toLocaleDateString(),
     },
     {
+      key: 'end_date' as keyof LeaveRequest,
       header: 'End Date',
-      accessor: (row: LeaveRequest) => new Date(row.end_date).toLocaleDateString(),
+      render: (_value: any, row: LeaveRequest) => new Date(row.end_date).toLocaleDateString(),
     },
     {
+      key: 'total_days' as keyof LeaveRequest,
       header: 'Total Days',
-      accessor: (row: LeaveRequest) => row.total_days,
     },
     {
+      key: 'status' as keyof LeaveRequest,
       header: 'Status',
-      accessor: (row: LeaveRequest) => <StatusBadge status={row.status} />,
+      render: (_value: any, row: LeaveRequest) => <StatusBadge status={row.status} />,
     },
     {
+      key: 'reason' as keyof LeaveRequest,
       header: 'Reason',
-      accessor: (row: LeaveRequest) => (
-        <span className="text-gray-400 text-sm">{row.reason || 'N/A'}</span>
+      render: (_value: any, row: LeaveRequest) => (
+        <span className="text-slate-500 text-sm">{row.reason || 'N/A'}</span>
       ),
     },
   ];
@@ -104,25 +107,28 @@ const LeavePage: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-white">My Leave Requests</h1>
+        <div>
+          <h1 className="text-3xl font-semibold text-slate-800">My Leave Requests</h1>
+          <p className="text-slate-500 mt-1">Request and manage your leave applications</p>
+        </div>
         <PrimaryButton onClick={() => setShowForm(!showForm)}>
           {showForm ? '✕ Cancel' : '+ New Request'}
           </PrimaryButton>
         </div>
 
         {showForm && (
-          <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
-            <h2 className="text-xl font-semibold text-white mb-4">Submit Leave Request</h2>
+          <div className="bg-white rounded-xl p-6 shadow-card">
+            <h2 className="text-xl font-semibold text-slate-800 mb-4">Submit Leave Request</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
                     Leave Type
                   </label>
                   <select
                     value={formData.leave_type_id}
                     onChange={(e) => setFormData({ ...formData, leave_type_id: e.target.value })}
-                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    className="w-full px-4 py-2 border border-gray-200 rounded-md text-slate-700 focus:outline-none focus:ring-2 focus:ring-primary-500"
                     required
                   >
                     <option value="">Select Leave Type</option>
@@ -154,13 +160,13 @@ const LeavePage: React.FC = () => {
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
                     Reason
                   </label>
                   <textarea
                     value={formData.reason}
                     onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
-                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 resize-none"
+                    className="w-full px-4 py-2 border border-gray-200 rounded-md text-slate-700 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
                     rows={3}
                     placeholder="Enter reason for leave request..."
                   />
@@ -171,7 +177,7 @@ const LeavePage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowForm(false)}
-                  className="px-6 py-2 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors"
+                  className="px-6 py-2 bg-white border border-gray-200 hover:bg-gray-50 text-slate-700 rounded-md transition-colors"
                 >
                   Cancel
                 </button>
@@ -183,7 +189,7 @@ const LeavePage: React.FC = () => {
           </div>
         )}
 
-      <div className="bg-gray-900 rounded-lg border border-gray-800 overflow-hidden">
+      <div className="bg-white rounded-xl shadow-card overflow-hidden">
         <DataTable columns={columns} data={myRequests} keyField="id" />
       </div>
     </div>
